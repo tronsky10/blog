@@ -16,20 +16,21 @@
                 <input type="password" id="password" name="password"><br>
             <label for="email">Email:</label><br>
                 <input type="email" id="email" name="email"><br><br>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Añadir Usuario">
         </form>
 </div>
 <div>
     <h2>lista de usuarios</h2>
         
-    <form action="user_select" method="post">
-        <select class="user_select">    
+    <form action="/remove" method="post">
+        <select multiple name="user.username">    
             {% for user in users %}
-                <option>
+                <option value="{{ user.username }}">
                     <b>Usuario:</b> {{ user.username }} - <b>Contraseña:</b> {{ user.password_hash }} - <b>Correo:</b> {{ user.email }}
                 </option>
             {% endfor %}
         </select>
+        <input type="submit" value="Eliminar usuario">
     </form>
 </div>
 </body>

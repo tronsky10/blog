@@ -42,6 +42,17 @@ def add_user():
     return redirect(url_for('index'))
 
 
+@app.route('/remove', methods=['POST'])
+def remove_user():
+    username = request.form['user.username']
+    user = User.query.filter_by(username=username).first()
+    if user:
+        db.session.delete(user)  # Elimina al usuario de la sesión
+        db.session.commit()  # Confirmar los cambios en la BD
+        print('el usuario ha sido borrado')
+        return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.session.commit()
