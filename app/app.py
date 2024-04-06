@@ -1,27 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-import bcrypt
+from model.user import db, User
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-db = SQLAlchemy(app)
+print("configuración de base de datos")
 
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-
-    def set_password(self, password):
-        self.password_hash = bcrypt.hashpw(password.encode(
-            'utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-    def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
-
-    def __repr__(self):
-        return '<User %r>' % self.username
+db.init_app(app)
 
 
 @app.route('/')
@@ -30,7 +15,7 @@ def index():
     return render_template('index.html', users=users)
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/user_add', methods=['POST'])
 def add_user():
     username = request.form['username']
     email = request.form['email']
@@ -42,7 +27,18 @@ def add_user():
     return redirect(url_for('index'))
 
 
-@app.route('/remove', methods=['POST'])
+# @app.route('/user_edit', methods=['POST'])
+# def edit_user():
+#    username = request.form['user.username']
+#    user = User.query.filter_by(username=username).first()
+#    if user:
+#        user.verified = true
+#        db.session.commit()  # Confirmar los cambios en la BD
+#        print('el usuario ha sido modificado')
+#        return redirect(url_for('index'))
+
+
+@app.route('/user_remove', methods=['POST'])
 def remove_user():
     username = request.form['user.username']
     user = User.query.filter_by(username=username).first()

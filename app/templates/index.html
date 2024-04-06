@@ -9,7 +9,7 @@
 <div>
     <h1>Añadir usuario</h1>
 
-        <form action="/add" method="post">
+        <form action="/user_add" method="post">
             <label for="username">Usuario:</label><br>
                 <input type="text" id="username" name="username"><br>
             <label for="password">Contraseña:</label><br>
@@ -22,7 +22,7 @@
 <div>
     <h2>lista de usuarios</h2>
         
-    <form action="/remove" method="post">
+    <form action="/user_remove" method="post">
         <select multiple name="user.username">    
             {% for user in users %}
                 <option value="{{ user.username }}">
